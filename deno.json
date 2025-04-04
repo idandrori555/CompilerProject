@@ -1,8 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run -A --watch exec.ts"
+    "dev": "deno run -A --watch exec.ts",
+    "express": "deno run -A --watch server.ts"
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@1"
+    "@std/assert": "jsr:@std/assert@1",
+    "express": "npm:express@^5.1.0"
   }
 }

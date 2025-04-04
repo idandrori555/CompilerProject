@@ -1,21 +1,14 @@
 import { execSync } from "node:child_process";
 import fs from "node:fs/promises";
-import { url } from "node:inspector";
 
-const MAIN_TEMPLATE = `
-public class Temp {
-    public static void main(String[] args){
-        $CODE$
-    }
-}
-`;
+const headers = {
+  "Content-Type": "application/json",
+  "Access-Control-Allow-Origin": "*", // Or your specific origin
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type",
+};
 
-const JAVASCRIPT_TEMPLATE = `
-$CODE$
-`;
-
-let template = "",
-  fileExt = "",
+let fileExt = "",
   command = "";
 
 Deno.serve(async (_req) => {
@@ -27,13 +20,11 @@ Deno.serve(async (_req) => {
 
   switch (urlPath) {
     case "/java":
-      template = MAIN_TEMPLATE;
       fileExt = ".java";
       command = `java ${fileName}.java`;
       break;
 
     case "/javascript":
-      template = JAVASCRIPT_TEMPLATE;
       fileExt = ".js";
       command = `node ${fileName}.js`;
       break;
@@ -43,30 +34,32 @@ Deno.serve(async (_req) => {
   }
 
   if (!fileExt || !command) {
-    return new Response("Bad request", { status: 400 });
+    return new Response("Bad request", { status: 400, headers });
   }
 
   const json = (await _req.json()) as { code: string };
   const { code } = json;
 
   if (!(typeof code == "string"))
-    return new Response("Bad request", { status: 400 });
+    return new Response("Bad request", { status: 400, headers });
 
-  await fs.writeFile(
-    `./dist/${fileName}.${fileExt}`,
-    template.replace("$CODE$", code)
-  );
+  await fs.writeFile(`./${fileName}${fileExt}`, code);
 
   try {
     const stdout = execSync(command);
+
     return new Response(JSON.stringify({ stdout: stdout.toString() }), {
       status: 200,
+      headers,
     });
-  } catch (err: any) {
+  } catch (err: unknown) {
     return new Response(
-      JSON.stringify({ error: `${err?.stderr?.toString() || ""}` }),
+      JSON.stringify({
+        error: `${(err as { stderr: string })?.stderr?.toString()}`,
+      }),
       {
         status: 500,
+        headers,
       }
     );
   }

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compiler</title>
+  </head>
+  <body>
+    <textarea name="" id="">System.out.println(1)</textarea>
+    <button onclick="compile()">Compile</button>
+    <p></p>
+  </body>
+  <script defer>
+    const textarea = document.querySelector("textarea");
+    const output = document.querySelector("p");
+
+    const compile = async () => {
+      const response = await fetch("http://127.0.0.1:8000/javascript", {
+        body: JSON.stringify({ code: textarea.value.toString() ?? "" }),
+        method: "POST",
+        headers: {},
+      });
+
+      output.innerText = await response.text();
+    };
+  </script>
+</html>
