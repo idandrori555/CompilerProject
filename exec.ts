@@ -23,21 +23,19 @@ Deno.serve(async (_req) => {
     return new Response("Method not allowed", { status: 405 });
 
   const urlPath = new URL(_req.url).pathname.toLowerCase();
-
   const fileName = crypto.randomUUID().toString();
-  const language = urlPath.slice(0, urlPath.length);
 
   switch (urlPath) {
     case "/java":
       template = MAIN_TEMPLATE;
       fileExt = ".java";
-      command = "java fileName.java";
+      command = `java ${fileName}.java`;
       break;
 
     case "/javascript":
       template = JAVASCRIPT_TEMPLATE;
       fileExt = ".js";
-      command = "node fileName.js";
+      command = `node ${fileName}.js`;
       break;
 
     default:
@@ -55,7 +53,7 @@ Deno.serve(async (_req) => {
     return new Response("Bad request", { status: 400 });
 
   await fs.writeFile(
-    `./dist/${language}/${fileName}.${fileExt}`,
+    `./dist/${fileName}.${fileExt}`,
     template.replace("$CODE$", code)
   );
 
