@@ -1,3 +1,1 @@
-const Language = (languageName: string) => {
-
-}
+// MOVE FUNCTIONS TO HERE

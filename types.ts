@@ -1,5 +1,12 @@
-export type LanguageInfo = {
+export type Language = {
   name: string;
-  command: string;
   fileExtension: string;
 };
+
+export type Command = string;
+
+export const enum LANG {
+  JAVA = "java",
+  PYTHON = "python",
+  JAVASCRIPT = "javascript",
+}
