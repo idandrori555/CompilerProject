@@ -17,8 +17,10 @@ const headers = {
 let fileExt = "",
   command = "";
 
-app.post("/api/", (req, res) => {
-    
-});
+const executeCommand = (command: string) => {
+  return execSync(command);
+};
+
+app.post("/api/", (req, res) => {});
 
 app.listen(PORT, () => console.log("OPEN ON: http://127.0.0.1:" + PORT));

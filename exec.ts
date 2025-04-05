@@ -12,8 +12,9 @@ let fileExt = "",
   command = "";
 
 Deno.serve(async (_req) => {
-  if (!(_req.method == "POST"))
+  if (!(_req.method == "POST")) {
     return new Response("Method not allowed", { status: 405 });
+  }
 
   const urlPath = new URL(_req.url).pathname.toLowerCase();
   const fileName = crypto.randomUUID().toString();
@@ -40,8 +41,9 @@ Deno.serve(async (_req) => {
   const json = (await _req.json()) as { code: string };
   const { code } = json;
 
-  if (!(typeof code == "string"))
+  if (!(typeof code == "string")) {
     return new Response("Bad request", { status: 400, headers });
+  }
 
   await fs.writeFile(`./${fileName}${fileExt}`, code);
 
