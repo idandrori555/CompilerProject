@@ -3,7 +3,7 @@ import { LANG, Language } from "./types.ts";
 import fs from "node:fs/promises";
 import path from "node:path";
 
-const EXEC_DIR_PATH = "compiled";
+const EXEC_DIR_PATH = "out";
 
 /**
  * Ensures the compiled directory exists. Creates it if it doesn't exist.
@@ -83,7 +83,7 @@ const createFile = async (
  */
 const getCommand = (lang: Language, fileName: string): string => {
   const commands: Record<string, string> = {
-    [LANG.JAVA]: `java ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
+    [LANG.JAVA]: `java -cp ./Edu ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
     [LANG.JAVASCRIPT]: `node ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
     [LANG.PYTHON]: `python ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
   };

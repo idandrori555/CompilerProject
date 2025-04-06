@@ -10,13 +10,18 @@
   <body>
     <h1>Online Code Compiler</h1>
 
-    <textarea id="code">console.log("Hello World");</textarea>
+    <textarea id="code">
+      class A {
+        public static void main(String[] args)
+        {
+          System.out.println("Hello World");
+        }
+      }
+    </textarea>
 
     <div class="controls">
       <select id="language">
-        <option value="javascript">JavaScript</option>
         <option value="java">Java</option>
-        <option value="python">Python</option>
       </select>
       <button onclick="compile()">Compile</button>
     </div>
