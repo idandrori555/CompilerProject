@@ -11,12 +11,24 @@
     <h1>Online Code Compiler</h1>
 
     <textarea id="code">
-      class A {
-        public static void main(String[] args)
-        {
-          System.out.println("Hello World");
+public class File {
+public static void main(String[] args) {
+    // Create a new Queue of Strings
+    Queue<String> queue = new Queue<String>();
+    
+    // Insert some elements
+    queue.insert("First");
+    queue.insert("Second");
+    queue.insert("Third");
+    
+    // Print the queue contents
+    System.out.println("Queue contents:");
+    while (!queue.isEmpty()) {
+        System.out.println(queue.remove());
         }
-      }
+    }
+}
+
     </textarea>
 
     <div class="controls">
