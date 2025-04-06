@@ -51,9 +51,9 @@ function initializeJavaLanguageServer() {
                 { 
                     label: 'syso', 
                     kind: monaco.languages.CompletionItemKind.Snippet, 
-                    insertText: 'System.out.println("${1:}");',
+                    insertText: 'System.out.println(${1:});',
                     insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
-                    documentation: 'System.out.println() with cursor inside quotes'
+                    documentation: 'System.out.println() with cursor inside brackets'
                 },
             ];
 
