@@ -14,6 +14,7 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cors());
 
+// handle api
 app.post("/api/:language", async (req, res) => {
   try {
     const response = await createAndRun(req.body?.code, req.params.language);
@@ -23,6 +24,7 @@ app.post("/api/:language", async (req, res) => {
   }
 });
 
+// serve static content on /
 app.get("/", (_req, res) => {
   console.log(path.join(__dirname, "public", "index.html"));
 
