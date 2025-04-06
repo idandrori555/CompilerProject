@@ -118,7 +118,7 @@
         output.innerText = "Compiling...";
 
         try {
-          const response = await fetch(`http://localhost/api/${lang}`, {
+          const response = await fetch(`${window.location.href}api/${lang}`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -1,6 +1,21 @@
 import { execSync } from "node:child_process";
 import { LANG, Language } from "./types.ts";
 import fs from "node:fs/promises";
+import path from "node:path";
+
+const EXEC_DIR_PATH = "compiled";
+
+/**
+ * Ensures the compiled directory exists. Creates it if it doesn't exist.
+ * @returns {Promise<void>} - A promise that resolves when the directory is ensured.
+ */
+const ensureCompiledDir = async (): Promise<void> => {
+  try {
+    await fs.mkdir(EXEC_DIR_PATH, { recursive: true });
+  } catch (err) {
+    console.error(`Failed to ensure compiled directory: ${err}`);
+  }
+};
 
 /**
  * Executes a shell command and returns the output as a string.
@@ -12,44 +27,26 @@ const executeCommand = (command: string): string => {
   try {
     return execSync(command).toString();
   } catch (err) {
-    throw err;
+    throw new Error(`Command execution failed: ${err}`);
   }
 };
 
-const EXEC_DIR_PATH = "compiled";
-
 /**
- * Resolves the language details based on the provided language name.
+ * Resolves the language details (name and file extension) based on the provided language name.
  * @param {string} languageName - The name of the programming language.
  * @returns {Language} - An object containing the language name and file extension.
  */
 const resolveLanguage = (languageName: string): Language => {
-  const language: Language = {
-    name: languageName,
-    fileExtension: "",
+  const extensions: Record<string, string> = {
+    [LANG.JAVA]: ".java",
+    [LANG.JAVASCRIPT]: ".js",
+    [LANG.PYTHON]: ".py",
   };
 
-  switch (languageName) {
-    case LANG.JAVA:
-      language.name = "java";
-      language.fileExtension = ".java";
-      break;
-
-    case LANG.JAVASCRIPT:
-      language.name = "javascript";
-      language.fileExtension = ".js";
-      break;
-
-    case LANG.PYTHON:
-      language.name = "python";
-      language.fileExtension = ".py";
-      break;
-
-    default:
-      break;
-  }
-
-  return language;
+  return {
+    name: languageName.toLowerCase(),
+    fileExtension: extensions[languageName] || "",
+  };
 };
 
 /**
@@ -69,10 +66,14 @@ const createFile = async (
   fileName: string,
   fileExt: string,
   code: string
-): Promise<void> =>
-  await fs
-    .writeFile(`./${EXEC_DIR_PATH}/${fileName}${fileExt}`, code)
-    .catch((err) => console.error(err));
+): Promise<void> => {
+  try {
+    await ensureCompiledDir(); // Ensure the compiled directory exists
+    await fs.writeFile(path.join(EXEC_DIR_PATH, `${fileName}${fileExt}`), code);
+  } catch (err) {
+    console.error(`Failed to create file: ${err}`);
+  }
+};
 
 /**
  * Constructs the command to execute a file based on its language and file name.
@@ -81,21 +82,13 @@ const createFile = async (
  * @returns {string} - The command to execute the file.
  */
 const getCommand = (lang: Language, fileName: string): string => {
-  switch (lang.name) {
-    case LANG.JAVA:
-      return `java ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`;
+  const commands: Record<string, string> = {
+    [LANG.JAVA]: `java ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
+    [LANG.JAVASCRIPT]: `node ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
+    [LANG.PYTHON]: `python ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
+  };
 
-    case LANG.JAVASCRIPT:
-      return `node ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`;
-
-    case LANG.PYTHON:
-      return `python ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`;
-
-    default:
-      break;
-  }
-
-  return "";
+  return commands[lang.name] || "";
 };
 
 /**
@@ -109,11 +102,14 @@ const createAndRun = async (
   langName: string
 ): Promise<string> => {
   const langObject = resolveLanguage(langName);
+
+  if (!langObject.fileExtension) return "Language not found!";
+
   const fileName = generateFileName();
   const command = getCommand(langObject, fileName);
 
+  // Create the file and execute the command
   await createFile(fileName, langObject.fileExtension, code);
-
   return executeCommand(command);
 };
 
