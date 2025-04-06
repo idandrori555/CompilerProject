@@ -4,6 +4,15 @@ FROM denoland/deno
 # Set the working directory inside the container
 WORKDIR /app
 
+# Install Java, Python, and Node.js
+RUN apt-get update && apt-get install -y \
+    openjdk-17-jdk \
+    python3 \
+    python3-pip \
+    nodejs \
+    npm && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
 # Copy the entire project to the working directory
 COPY . .
 
