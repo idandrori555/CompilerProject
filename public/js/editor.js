@@ -37,7 +37,7 @@ require(['vs/editor/editor.main'], function() {
 
     // Create editor instance
     editor = monaco.editor.create(document.getElementById('editor'), {
-        value: `class Program {
+        value: `public class Program {
     public static void main(String[] args) {
         System.out.println("Hello, World!");
     }

@@ -52,8 +52,8 @@ window.compile = function() {
 window.setupCompileButton = function() {
     // Create compile button
     const compileButton = document.createElement('button');
-    compileButton.textContent = 'Compile & Run';
     compileButton.className = 'compile-button';
+    compileButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg> Compile';
     compileButton.onclick = window.compile;
     
     // Add button to the document

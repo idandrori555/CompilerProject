@@ -39,8 +39,6 @@ const executeCommand = (command: string): string => {
 const resolveLanguage = (languageName: string): Language => {
   const extensions: Record<string, string> = {
     [LANG.JAVA]: ".java",
-    [LANG.JAVASCRIPT]: ".js",
-    [LANG.PYTHON]: ".py",
   };
 
   return {
@@ -84,8 +82,6 @@ const createFile = async (
 const getCommand = (lang: Language, fileName: string): string => {
   const commands: Record<string, string> = {
     [LANG.JAVA]: `java -cp ./Edu ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
-    [LANG.JAVASCRIPT]: `node ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
-    [LANG.PYTHON]: `python ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
   };
 
   return commands[lang.name] || "";

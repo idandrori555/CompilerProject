@@ -12,8 +12,6 @@ export type Language = {
  */
 export const enum LANG {
   JAVA = "java",
-  PYTHON = "python",
-  JAVASCRIPT = "javascript",
 }
 
 /**
@@ -22,6 +20,4 @@ export const enum LANG {
  */
 export const LANGUAGE_EXTENSIONS: Record<LANG, string> = {
   [LANG.JAVA]: ".java",
-  [LANG.PYTHON]: ".py",
-  [LANG.JAVASCRIPT]: ".js",
 };

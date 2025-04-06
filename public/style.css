@@ -125,6 +125,10 @@ body {
 
 /* Compile button styles */
 .compile-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
     background-color: #007acc;
     color: white;
     border: none;
@@ -135,6 +139,14 @@ body {
     font-size: 12px;
     font-weight: 500;
     transition: background-color 0.2s;
+}
+
+.compile-button svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
 }
 
 .compile-button:hover {
