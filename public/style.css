@@ -28,14 +28,32 @@ body {
 .editor-container {
   flex: 1;
   overflow: hidden;
+  min-height: 100px;
+}
+
+.resize-handle {
+  height: 6px;
+  background-color: #1e1e1e;
+  cursor: row-resize;
+  position: relative;
+  border-top: 1px solid #3c3c3c;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.resize-handle:hover {
+  background-color: #007acc;
 }
 
 .bottom-panel {
   height: 300px;
+  min-height: 100px;
+  max-height: 80vh;
   background-color: #1e1e1e;
   border-top: 1px solid #3c3c3c;
   display: flex;
   flex-direction: column;
+  resize: vertical;
+  overflow: auto;
 }
 
 .panel-tabs {
