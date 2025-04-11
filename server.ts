@@ -3,7 +3,7 @@ import path, { dirname } from "node:path";
 import express from "npm:express";
 import cors from "npm:cors";
 
-import { createAndRun } from "./IUtils.ts";
+import { createAndRun } from "./functions.ts";
 
 const __dirname = dirname(import.meta.url);
 const PORT = 3000;
@@ -20,7 +20,7 @@ app.post("/api/:language", async (req, res) => {
     const response = await createAndRun(req.body?.code, req.params.language);
     res.status(200).json({ out: response });
   } catch (error) {
-    res.status(500).json({ out: error?.toString() || "Error!" });
+    res.status(500).json({ out: error?.toString() ?? "Error!" });
   }
 });
 
