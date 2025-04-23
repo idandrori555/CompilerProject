@@ -63,7 +63,7 @@ const generateFileName = (): string => crypto.randomUUID();
 const createFile = async (
   fileName: string,
   fileExt: string,
-  code: string
+  code: string,
 ): Promise<void> => {
   try {
     await ensureCompiledDir(); // Ensure the compiled directory exists
@@ -81,7 +81,8 @@ const createFile = async (
  */
 const getCommand = (lang: Language, fileName: string): string => {
   const commands: Record<string, string> = {
-    [LANG.JAVA]: `java -cp ./Edu ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
+    [LANG.JAVA]:
+      `java -cp ./Edu ./${EXEC_DIR_PATH}/${fileName}${lang.fileExtension}`,
   };
 
   return commands[lang.name] || "";
@@ -95,7 +96,7 @@ const getCommand = (lang: Language, fileName: string): string => {
  */
 const createAndRun = async (
   code: string,
-  langName: string
+  langName: string,
 ): Promise<string> => {
   const langObject = resolveLanguage(langName);
 
